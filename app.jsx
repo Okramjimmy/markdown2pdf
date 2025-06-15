@@ -136,6 +136,14 @@ Enjoy using the app!
           #print-area h1, #print-area h2, #print-area h3, #print-area p, #print-area ul, #print-area ol {
             margin-bottom: 1em; /* Ensure spacing after block elements */
           }
+          #print-area ul {
+            list-style: disc; /* Ensure disc bullets for unordered lists */
+            padding-left: 1.5em; /* Add padding for bullet visibility */
+          }
+          #print-area ol {
+            list-style: decimal; /* Ensure numbers for ordered lists */
+            padding-left: 1.8em; /* Add padding for number visibility */
+          }
            /* Basic styling for highlight.js theme */
           /* Using a common theme like 'atom-one-dark' */
           .hljs{display:block;overflow-x:auto;padding:0.5em;background:#282c34;color:#abb2bf}
