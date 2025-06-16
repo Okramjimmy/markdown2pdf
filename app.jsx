@@ -173,12 +173,15 @@ Enjoy using the app!
               margin: 0;
             }
           }
-          #print-area p, #print-area li {
-            line-height: 1.6em; /* Adjust line spacing for readability */
-          }
-          #print-area h1, #print-area h2, #print-area h3, #print-area p, #print-area ul, #print-area ol {
-            margin-bottom: 1em; /* Ensure spacing after block elements */
-          }
+#print-area p, #print-area li {
+line-height: 1.6em; /* Adjust line spacing for readability */
+}
+#print-area h1, #print-area h2, #print-area h3 {
+font-weight: bold; /* Ensure headings are bold */
+}
+#print-area h1, #print-area h2, #print-area h3, #print-area p, #print-area ul, #print-area ol {
+margin-bottom: 1em; /* Ensure spacing after block elements */
+}
           #print-area ul {
             list-style: disc; /* Ensure disc bullets for unordered lists */
             padding-left: 1.5em; /* Add padding for bullet visibility */
