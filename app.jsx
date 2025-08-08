@@ -160,6 +160,7 @@ Enjoy using the app!
             font-size: 16px;
             line-height: 1.5;
             word-wrap: break-word;
+            text-align: justify;
           }
 
           .markdown-body .octicon {
@@ -317,12 +318,12 @@ Enjoy using the app!
           }
 
           .markdown-body table {
-            display: block;
+            display: table;
             width: 100%;
             margin-bottom: 16px;
-            overflow: auto;
             border-spacing: 0;
             border-collapse: collapse;
+            table-layout: fixed;
           }
 
           .markdown-body table th {
@@ -333,6 +334,7 @@ Enjoy using the app!
           .markdown-body table td {
             padding: 6px 13px;
             border: 1px solid #dfe2e5;
+            word-wrap: break-word;
           }
 
           .markdown-body table tr {
@@ -464,6 +466,7 @@ Enjoy using the app!
             }
             /* Remove margins and padding from the print layout */
             @page {
+              size: A4;
               margin: 20mm;
             }
             body {
@@ -523,11 +526,11 @@ Enjoy using the app!
 
 
         {/* Main Content Area */}
-        <main className="flex-grow pt-20 flex flex-col md:flex-row gap-4 p-4">
+        <main className="flex-grow pt-20 flex flex-wrap justify-center gap-4 p-4">
 
 
           {/* Left: Editor Panel */}
-          <div id="editor-panel" className="flex-1 flex flex-col bg-white rounded-lg border border-slate-200 shadow-md">
+          <div id="editor-panel" className="flex flex-col bg-white rounded-lg border border-slate-200 shadow-md" style={{ width: '210mm', minHeight: '297mm' }}>
             <div className="p-3 border-b border-slate-200 flex justify-between items-center">
               <h2 className="font-semibold text-slate-700">Markdown Editor</h2>
               {/* <button
@@ -555,7 +558,7 @@ Enjoy using the app!
 
 
           {/* Right: Preview Panel */}
-          <div id="preview-panel" className="flex-1 flex flex-col bg-white rounded-lg border border-slate-200 shadow-md">
+          <div id="preview-panel" className="flex flex-col bg-white rounded-lg border border-slate-200 shadow-md" style={{ width: '210mm', minHeight: '297mm' }}>
             <div className="p-3 border-b border-slate-200">
               <h2 className="font-semibold text-slate-700">HTML Preview</h2>
             </div>
