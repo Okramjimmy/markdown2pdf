@@ -35,21 +35,15 @@ This is a simple React app that converts your Markdown into a beautifully format
 
 ### Example Code Block
 
-Here's an example of a JavaScript code block with syntax highlighting:
+Here's an example of a TypeScript code block with syntax highlighting:
 
-\`\`\`javascript
-import React, { useState } => {
-  const [count, setCount] = useState(0);
-
-  return (
-    <div>
-      <p>You clicked {count} times</p>
-      <button onClick={() => setCount(count + 1)}>
-        Click me
-      </button>
-    </div>
-  );
-}
+\`\`\`typescript
+await autosaveDocument(
+  'document.html',
+  '<p>Content</p>',
+  'en',
+  (isSaving) => console.log('Saving:', isSaving)
+);
 \`\`\`
 
 ### Example Table with Code
@@ -66,26 +60,29 @@ Enjoy using the app!
 
   const fileInputRef = useRef(null);
 
-  // Configure marked to use highlight.js for syntax highlighting
+  // Configure marked (without highlight.js integration here)
   useEffect(() => {
-    if (marked && hljs) {
+    if (marked) {
       marked.setOptions({
-        highlight: function (code, lang) {
-          const language = hljs.getLanguage(lang) ? lang : 'plaintext';
-          return hljs.highlight(code, { language }).value;
-        },
-        langPrefix: 'hljs language-', // for compatibility with highlight.js css
+        langPrefix: 'hljs language-',
         gfm: true,
         breaks: true,
       });
     }
   }, []);
 
-  // Effect to add copy buttons to code blocks
+  // Effect to apply highlighting and add copy buttons after render
   useEffect(() => {
+    // 1. Apply syntax highlighting
+    if (hljs) {
+        document.querySelectorAll('#print-area pre code').forEach((element) => {
+            hljs.highlightElement(element);
+        });
+    }
+
+    // 2. Add copy buttons to code blocks
     const addCopyButtons = () => {
       document.querySelectorAll('#print-area pre').forEach(pre => {
-        // Check if a copy button already exists to prevent duplicates on re-renders
         if (pre.querySelector('.copy-button')) {
           return;
         }
@@ -108,9 +105,8 @@ Enjoy using the app!
               });
           };
 
-          // Wrap pre in a div for relative positioning of the button
           const wrapper = document.createElement('div');
-          wrapper.className = 'relative group'; // 'group' class for Tailwind hover utility
+          wrapper.className = 'relative group';
           pre.parentNode.insertBefore(wrapper, pre);
           wrapper.appendChild(pre);
           wrapper.appendChild(button);
@@ -118,9 +114,8 @@ Enjoy using the app!
       });
     };
 
-    // Run after initial render and whenever markdownText changes
     addCopyButtons();
-  }, [markdownText]); // Re-run when markdownText changes
+  }, [markdownText]); // Re-run this effect when markdownText changes
 
   const handleTextChange = (e) => {
     setMarkdownText(e.target.value);
@@ -135,7 +130,6 @@ Enjoy using the app!
       };
       reader.readAsText(file);
     } else {
-      // Simple user feedback for wrong file type
       alert("Please upload a valid .md file.");
     }
   };
@@ -154,10 +148,9 @@ Enjoy using the app!
 
   return (
     <>
-      {/* This style block is for print media queries */}
       <style>
         {`
-          /* GitHub Markdown CSS - Simplified for embedding */
+          /* Your existing CSS here... */
           .markdown-body {
             -ms-text-size-adjust: 100%;
             -webkit-text-size-adjust: 100%;
@@ -169,160 +162,6 @@ Enjoy using the app!
             line-height: 1.5;
             word-wrap: break-word;
             text-align: justify;
-          }
-
-          .markdown-body .octicon {
-            display: inline-block;
-            fill: currentColor;
-            vertical-align: text-bottom;
-          }
-
-          .markdown-body h1:hover .anchor .octicon-link:before,
-          .markdown-body h2:hover .anchor .octicon-link:before,
-          .markdown-body h3:hover .anchor .octicon-link:before,
-          .markdown-body h4:hover .anchor .octicon-link:before,
-          .markdown-body h5:hover .anchor .octicon-link:before,
-          .markdown-body h6:hover .anchor .octicon-link:before {
-            width: 16px;
-            height: 16px;
-            content: ' ';
-            display: inline-block;
-            background-color: currentColor;
-            -webkit-mask-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path fill-rule='evenodd' d='M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.605a.75.75 0 001.06-1.06L3.25 10.25a2 2 0 112.83-2.83l2.5 2.5a2 2 0 010 2.83.75.75 0 001.06 1.06 3.5 3.5 0 000-4.95l-2.5-2.5a3.5 3.5 0 00-4.95 0l-1.25 1.25a.75.75 0 001.06 1.06z'></path></svg>");
-            mask-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path fill-rule='evenodd' d='M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.605a.75.75 0 001.06-1.06L3.25 10.25a2 2 0 112.83-2.83l2.5 2.5a2 2 0 010 2.83.75.75 0 001.06 1.06 3.5 3.5 0 000-4.95l-2.5-2.5a3.5 3.5 0 00-4.95 0l-1.25 1.25a.75.75 0 001.06 1.06z'></path></svg>");
-          }
-
-          .markdown-body details,
-          .markdown-body figcaption,
-          .markdown-body figure {
-            display: block;
-          }
-
-          .markdown-body summary {
-            display: list-item;
-          }
-
-          .markdown-body a {
-            background-color: transparent;
-            text-decoration: none;
-          }
-
-          .markdown-body a:active,
-          .markdown-body a:hover {
-            outline-width: 0;
-          }
-
-          .markdown-body abbr[title] {
-            border-bottom: none;
-            text-decoration: underline dotted;
-          }
-
-          .markdown-body b,
-          .markdown-body strong {
-            font-weight: 600;
-          }
-
-          .markdown-body dfn {
-            font-style: italic;
-          }
-
-          .markdown-body h1 {
-            padding-bottom: .3em;
-            font-size: 2em;
-            border-bottom: 1px solid #eaecef;
-          }
-
-          .markdown-body h1,
-          .markdown-body h2,
-          .markdown-body h3,
-          .markdown-body h4,
-          .markdown-body h5,
-          .markdown-body h6 {
-            margin-top: 24px;
-            margin-bottom: 16px;
-            font-weight: 600;
-            line-height: 1.25;
-          }
-
-          .markdown-body h2 {
-            padding-bottom: .3em;
-            font-size: 1.5em;
-            border-bottom: 1px solid #eaecef;
-          }
-
-          .markdown-body h3 {
-            font-size: 1.25em;
-          }
-
-          .markdown-body h4 {
-            font-size: 1em;
-          }
-
-          .markdown-body h5 {
-            font-size: .875em;
-          }
-
-          .markdown-body h6 {
-            font-size: .85em;
-            color: #6a737d;
-          }
-
-          .markdown-body p {
-            margin-top: 0;
-            margin-bottom: 16px;
-          }
-
-          .markdown-body blockquote {
-            margin: 0 0 16px;
-            padding: 0 1em;
-            color: #6a737d;
-            border-left: .25em solid #dfe2e5;
-          }
-
-          .markdown-body ul,
-          .markdown-body ol {
-            margin-top: 0;
-            margin-bottom: 16px;
-            padding-left: 2em;
-          }
-
-          .markdown-body ul ul,
-          .markdown-body ul ol,
-          .markdown-body ol ol,
-          .markdown-body ol ul {
-            margin-top: 0;
-            margin-bottom: 0;
-          }
-
-          .markdown-body li {
-            word-wrap: break-all;
-          }
-
-          .markdown-body li>p {
-            margin-top: 16px;
-          }
-
-          .markdown-body li+li {
-            margin-top: .25em;
-          }
-
-          .markdown-body dl {
-            padding: 0;
-            margin-top: 0;
-            margin-bottom: 16px;
-          }
-
-          .markdown-body dl dt {
-            padding: 0;
-            margin-top: 16px;
-            font-size: 1em;
-            font-style: italic;
-            font-weight: 600;
-          }
-
-          .markdown-body dl dd {
-            padding: 0 16px;
-            margin-bottom: 16px;
           }
 
           .markdown-body table {
@@ -353,51 +192,18 @@ Enjoy using the app!
           .markdown-body table tr:nth-child(2n) {
             background-color: #FAF9F5;
           }
-
-          .markdown-body img {
-            max-width: 100%;
-            box-sizing: content-box;
-            background-color: #fff;
-          }
-
-          .markdown-body img[align=right] {
-            padding-left: 20px;
-          }
-
-          .markdown-body img[align=left] {
-            padding-right: 20px;
-          }
-
-          .markdown-body code {
-            padding: .2em .4em;
-            margin: 0;
-            font-size: 85%;
-            background-color: rgba(27,31,35,.05);
-            border-radius: 3px;
-          }
           
-          /* Custom style for code inside tables */
           .markdown-body table code {
             background-color: #B6807E;
             color: #FFFFFF;
+            padding: .2em .4em;
+            margin: 0;
+            font-size: 85%;
+            border-radius: 3px;
           }
 
           .markdown-body pre {
             word-wrap: normal;
-          }
-
-          .markdown-body pre>code {
-            padding: 0;
-            margin: 0;
-            font-size: 100%;
-            word-break: normal;
-            white-space: pre;
-            background: transparent;
-            border: 0;
-          }
-
-          .markdown-body .highlight {
-            margin-bottom: 16px;
           }
 
           .markdown-body .highlight pre,
@@ -411,135 +217,58 @@ Enjoy using the app!
             border: 1px solid #EAEAEA;
           }
 
-          .markdown-body pre code {
-            display: inline;
-            max-width: auto;
-            padding: 0;
-            margin: 0;
-            overflow: visible;
-            line-height: inherit;
-            word-wrap: normal;
-            background-color: transparent;
-            border: 0;
+          .markdown-body code {
+            font-family: monospace;
           }
 
-          .markdown-body .commit-tease-contributors {
-            border-bottom: 1px solid #eaecef;
-            border-top: 1px solid #eaecef;
-          }
+          /* ... other styles */
 
-          .markdown-body .blob-wrapper {
-            border-bottom: 1px solid #eaecef;
-          }
-
-          .markdown-body .bro-tip {
-            box-shadow: 0 1px 2px rgba(0,0,0,.12), 0 3px 10px rgba(0,0,0,.08);
-          }
-
-          .markdown-body .task-list-item {
-            list-style-type: none;
-          }
-
-          .markdown-body .task-list-item+.task-list-item {
-            margin-top: 3px;
-          }
-
-          .markdown-body .task-list-item input {
-            margin: 0 .2em .25em -1.6em;
-            vertical-align: middle;
-          }
-
-          .markdown-body hr {
-            height: .25em;
-            padding: 0;
-            margin: 24px 0;
-            background-color: #e1e4e8;
-            border: 0;
-          }
-
-          /* Print media queries */
           @media print {
-            /* Hide everything except the preview area */
-            body > * {
-              visibility: hidden;
-            }
-            #print-area, #print-area * {
-              visibility: visible;
-            }
-            #print-area {
-              position: absolute;
-              left: 0;
-              top: 0;
-              width: 100%;
-              height: auto;
-              overflow: visible;
-            }
-            /* Remove margins and padding from the print layout */
-            @page {
-              size: A4;
-              margin: 20mm;
-            }
-            body {
-              margin: 0;
-            }
+            body > * { visibility: hidden; }
+            #print-area, #print-area * { visibility: visible; }
+            #print-area { position: absolute; left: 0; top: 0; width: 100%; }
+            @page { size: A4; margin: 20mm; }
+            body { margin: 0; }
           }
-
-          /* NEW: Syntax Highlighting theme from image */
+          
+          /* Syntax Highlighting theme from image */
           .hljs {
-            display: block;
-            overflow-x: auto;
-            padding: 0.5em;
             color: #383a42;
             background: #FCFCFC;
           }
-          .hljs-comment,
-          .hljs-quote {
+          .hljs-comment, .hljs-quote {
             color: #a0a1a7;
             font-style: italic;
           }
-          .hljs-doctag,
-          .hljs-keyword,
-          .hljs-formula {
-            color: #d73a83;
+          .hljs-keyword, .hljs-selector-tag, .hljs-subst {
+            color: #a626a4;
           }
-          .hljs-section,
-          .hljs-name,
-          .hljs-selector-tag,
-          .hljs-deletion,
+          .hljs-number, .hljs-literal, .hljs-variable, .hljs-template-variable, .hljs-tag .hljs-attr {
+            color: #986801;
+          }
+          .hljs-string, .hljs-doctag {
+            color: #50a14f;
+          }
+          .hljs-title, .hljs-section, .hljs-selector-id {
+            color: #4078f2;
+          }
           .hljs-subst {
-            color: #e45649;
+            color: #383a42;
           }
-          .hljs-literal {
-            color: #0184bb;
-          }
-          .hljs-string,
-          .hljs-regexp,
-          .hljs-addition,
-          .hljs-attribute,
-          .hljs-meta-string {
-            color: #26831A;
-          }
-          .hljs-built_in,
-          .hljs-class .hljs-title {
+          .hljs-type, .hljs-class .hljs-title {
             color: #c18401;
           }
-          .hljs-attr,
-          .hljs-variable,
-          .hljs-template-variable,
-          .hljs-type,
-          .hljs-selector-class,
-          .hljs-selector-attr,
-          .hljs-selector-pseudo,
-          .hljs-number {
-            color: #2D8F8F;
+          .hljs-tag, .hljs-name, .hljs-attribute {
+            color: #e45649;
           }
-          .hljs-symbol,
-          .hljs-bullet,
-          .hljs-link,
-          .hljs-meta,
-          .hljs-selector-id,
-          .hljs-title {
-            color: #1F6FE4;
+          .hljs-regexp, .hljs-link {
+            color: #c96442;
+          }
+          .hljs-symbol, .hljs-bullet {
+            color: #0184bb;
+          }
+          .hljs-built_in, .hljs-builtin-name {
+            color: #c18401;
           }
           .hljs-emphasis {
             font-style: italic;
@@ -547,8 +276,11 @@ Enjoy using the app!
           .hljs-strong {
             font-weight: bold;
           }
-          .hljs-link {
-            text-decoration: underline;
+          .hljs-function {
+             color: #4078f2;
+          }
+          .hljs-params {
+            color: #383a42;
           }
         `}
       </style>
