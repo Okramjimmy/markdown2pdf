@@ -282,41 +282,35 @@ Enjoy using the app!
             body { margin: 0; }
           }
           
-          /* Syntax Highlighting theme from image */
+          /* --- UPDATED SYNTAX HIGHLIGHTING THEME --- */
           .hljs {
-            color: #383a42;
-            background: #FCFCFC;
+            color: #383a42; /* Default text color */
+            background: #FCFCFC; /* Light background */
           }
           .hljs-comment, .hljs-quote {
-            color: #a0a1a7;
+            color: #6F6F78; /* Muted gray for comments */
             font-style: italic;
           }
           .hljs-keyword, .hljs-selector-tag, .hljs-subst {
-            color: #a626a4;
+            color: #D73A83; /* Purple/magenta for keywords like 'await' */
           }
-          .hljs-number, .hljs-literal, .hljs-variable, .hljs-template-variable, .hljs-tag .hljs-attr {
-            color: #986801;
+          .hljs-string, .hljs-doctag, .hljs-regexp {
+            color: #26831A; /* Green for strings */
           }
-          .hljs-string, .hljs-doctag {
-            color: #50a14f;
-          }
-          .hljs-title, .hljs-section, .hljs-selector-id {
-            color: #4078f2;
-          }
-          .hljs-function, .hljs-class .hljs-title {
-             color: #4078f2;
-          }
-          .hljs-tag, .hljs-name, .hljs-attribute {
-            color: #e45649;
-          }
-          .hljs-regexp, .hljs-link {
-            color: #c96442;
-          }
-          .hljs-symbol, .hljs-bullet {
-            color: #0184bb;
+          .hljs-title.function_, .hljs-title.class_ {
+            color: #1F6FE4; /* Blue for function/class names */
           }
           .hljs-built_in, .hljs-builtin-name {
-            color: #c18401;
+              color: #B56613; /* Brown/orange for built-ins like 'console' */
+          }
+          .hljs-variable, .hljs-template-variable, .hljs-params {
+            color: #383a42; /* Default color for variables/parameters */
+          }
+          .hljs-number, .hljs-literal {
+            color: #2D8F8F; /* Teal for numbers/literals */
+          }
+          .hljs-attribute {
+              color: #B56613; /* Brown/orange for attributes */
           }
           .hljs-emphasis {
             font-style: italic;
