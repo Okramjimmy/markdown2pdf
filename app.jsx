@@ -579,8 +579,6 @@
 
 
 // -=-=-=-=
-
-
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 
 // Icon Component
@@ -666,6 +664,7 @@ const CodeBlock = ({ code, language }) => {
 
 // Main App Component
 export default function App() {
+  const [librariesLoaded, setLibrariesLoaded] = useState(false);
   const [markdownText, setMarkdownText] = useState(
     `# Welcome to the Markdown to PDF Converter!
 
@@ -725,27 +724,53 @@ Enjoy using the app!
   const [error, setError] = useState(null);
   const fileInputRef = useRef(null);
 
-  // Configure marked once
+  // Load external libraries
   useEffect(() => {
-    if (window.marked && window.hljs) {
-      window.marked.setOptions({
-        highlight: function (code, lang) {
-          const language = window.hljs.getLanguage(lang) ? lang : 'plaintext';
-          return window.hljs.highlight(code, { language }).value;
-        },
-        langPrefix: 'hljs language-',
-        gfm: true,
-        breaks: true,
-      });
+    const checkLibraries = () => {
+      if (window.marked && window.hljs) {
+        setLibrariesLoaded(true);
+        
+        window.marked.setOptions({
+          highlight: function (code, lang) {
+            const language = window.hljs.getLanguage(lang) ? lang : 'plaintext';
+            return window.hljs.highlight(code, { language }).value;
+          },
+          langPrefix: 'hljs language-',
+          gfm: true,
+          breaks: true,
+        });
+      }
+    };
+
+    // Check immediately
+    checkLibraries();
+
+    // If not loaded, set up an interval to check
+    if (!window.marked || !window.hljs) {
+      const interval = setInterval(checkLibraries, 100);
+      
+      // Timeout after 10 seconds
+      const timeout = setTimeout(() => {
+        clearInterval(interval);
+        if (!window.marked || !window.hljs) {
+          setError('Failed to load required libraries. Please refresh the page.');
+        }
+      }, 10000);
+
+      return () => {
+        clearInterval(interval);
+        clearTimeout(timeout);
+      };
     }
   }, []);
 
   // Parse markdown with error handling
   const parsedContent = useMemo(() => {
+    if (!librariesLoaded || !window.marked) {
+      return { html: '<p>Loading...</p>', codeBlocks: [] };
+    }
+
     try {
-      if (!window.marked) {
-        return { html: '<p>Loading markdown parser...</p>', codeBlocks: [] };
-      }
 
       // Parse markdown
       const html = window.marked.parse(markdownText);
@@ -777,7 +802,7 @@ Enjoy using the app!
       setError(`Markdown parsing error: ${err.message}`);
       return { html: '<p>Error parsing markdown</p>', codeBlocks: [] };
     }
-  }, [markdownText]);
+  }, [markdownText, librariesLoaded]);
 
   const handleTextChange = (e) => {
     setMarkdownText(e.target.value);
@@ -830,14 +855,17 @@ Enjoy using the app!
 
   useEffect(() => {
     // Mount React components for code blocks
-    parsedContent.codeBlocks.forEach((block) => {
-      const placeholder = document.querySelector(`[data-code-block="${block.index}"]`);
-      if (placeholder) {
-        const root = ReactDOM.createRoot(placeholder);
-        root.render(<CodeBlock code={block.code} language={block.language} />);
-      }
-    });
-  }, [parsedContent]);
+    if (librariesLoaded) {
+      parsedContent.codeBlocks.forEach((block) => {
+        const placeholder = document.querySelector(`[data-code-block="${block.index}"]`);
+        if (placeholder && !placeholder.hasAttribute('data-rendered')) {
+          placeholder.setAttribute('data-rendered', 'true');
+          const root = ReactDOM.createRoot(placeholder);
+          root.render(<CodeBlock code={block.code} language={block.language} />);
+        }
+      });
+    }
+  }, [parsedContent, librariesLoaded]);
 
   return (
     <>
