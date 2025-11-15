@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, 'useState, useEffect, useRef } from 'react';
 import { Icon } from './Icon'; // Assuming Icon component is in a separate file
 
 
@@ -150,47 +150,99 @@ Enjoy using the app!
     <>
       <style>
         {`
-          /* Your existing CSS here... */
+          /* Document-Style Formatting */
           .markdown-body {
-            -ms-text-size-adjust: 100%;
-            -webkit-text-size-adjust: 100%;
-            margin: 0;
-            color: #24292e;
-            background-color: #fff;
-            font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             font-size: 16px;
-            line-height: 1.5;
-            word-wrap: break-word;
-            text-align: justify;
+            line-height: 1.7;
+            color: #333;
+            background-color: #FAF9F5;
+          }
+
+          .markdown-body h1,
+          .markdown-body h2,
+          .markdown-body h3,
+          .markdown-body h4,
+          .markdown-body h5,
+          .markdown-body h6 {
+            font-weight: 700;
+            color: #111;
+            margin-top: 1.5em;
+            margin-bottom: 0.75em;
+            line-height: 1.2;
+          }
+
+          .markdown-body h1 {
+            font-size: 2.25em;
+            border-bottom: none; /* Removed GitHub-style border */
+          }
+
+          .markdown-body h2 {
+            font-size: 1.75em;
+            border-bottom: none; /* Removed GitHub-style border */
+          }
+
+          .markdown-body h3 {
+            font-size: 1.35em;
+          }
+          
+          .markdown-body p {
+            margin-bottom: 1.25em;
+          }
+
+          .markdown-body a {
+            color: #007bff;
+            text-decoration: none;
+          }
+          .markdown-body a:hover {
+            text-decoration: underline;
+          }
+          
+          .markdown-body blockquote {
+            margin: 0 0 1.5em;
+            padding: 0.5em 1.25em;
+            color: #555;
+            background-color: #f8f9fa;
+            border-left: 4px solid #ccc;
+          }
+
+          .markdown-body ul,
+          .markdown-body ol {
+            margin-bottom: 1.5em;
+            padding-left: 1.5em;
+          }
+
+          .markdown-body hr {
+            border: 0;
+            height: 1px;
+            background: #e0e0e0;
+            margin: 3em 0;
           }
 
           .markdown-body table {
-            display: table;
             width: 100%;
-            margin-bottom: 16px;
-            border-spacing: 0;
+            margin-bottom: 1.5em;
             border-collapse: collapse;
-            table-layout: fixed;
-          }
-
-          .markdown-body table th {
-            font-weight: 600;
           }
 
           .markdown-body table th,
           .markdown-body table td {
-            padding: 6px 13px;
-            border: 1px solid #dfe2e5;
-            word-wrap: break-word;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            text-align: left;
+          }
+
+          .markdown-body table th {
+            background-color: #f2f2f2;
+            font-weight: 600;
           }
 
           .markdown-body table tr {
-            background-color: #FAF9F5;
-            border-top: 1px solid #c6cbd1;
+             background-color: #FAF9F5;
           }
-
+          
           .markdown-body table tr:nth-child(2n) {
-            background-color: #FAF9F5;
+            background-color: #f9f9f9;
           }
           
           .markdown-body table code {
@@ -199,30 +251,29 @@ Enjoy using the app!
             padding: .2em .4em;
             margin: 0;
             font-size: 85%;
-            border-radius: 3px;
+            border-radius: 4px;
           }
 
           .markdown-body pre {
+            margin-bottom: 1.5em;
             word-wrap: normal;
           }
 
-          .markdown-body .highlight pre,
           .markdown-body pre {
             padding: 16px;
             overflow: auto;
             font-size: 85%;
-            line-height: 1.7; /* Increased line-height for better readability */
+            line-height: 1.7;
             background-color: #FCFCFC;
             border-radius: 6px;
             border: 1px solid #EAEAEA;
           }
-
+          
           .markdown-body code {
-            font-family: monospace;
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
           }
 
-          /* ... other styles */
-
+          /* Print media queries */
           @media print {
             body > * { visibility: hidden; }
             #print-area, #print-area * { visibility: visible; }
@@ -252,11 +303,8 @@ Enjoy using the app!
           .hljs-title, .hljs-section, .hljs-selector-id {
             color: #4078f2;
           }
-          .hljs-subst {
-            color: #383a42;
-          }
-          .hljs-type, .hljs-class .hljs-title {
-            color: #c18401;
+          .hljs-function, .hljs-class .hljs-title {
+             color: #4078f2;
           }
           .hljs-tag, .hljs-name, .hljs-attribute {
             color: #e45649;
@@ -275,12 +323,6 @@ Enjoy using the app!
           }
           .hljs-strong {
             font-weight: bold;
-          }
-          .hljs-function {
-             color: #4078f2;
-          }
-          .hljs-params {
-            color: #383a42;
           }
         `}
       </style>
