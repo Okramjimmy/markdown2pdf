@@ -159,7 +159,7 @@ Enjoy using the app!
             background-color: #fff;
             font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
             font-size: 16px;
-            line-height: 1.5;
+            line-height: 1.8;
             word-wrap: break-word;
             text-align: justify;
           }
@@ -211,7 +211,7 @@ Enjoy using the app!
             padding: 16px;
             overflow: auto;
             font-size: 85%;
-            line-height: 1.45;
+            line-height: 1.75;
             background-color: #FCFCFC;
             border-radius: 6px;
             border: 1px solid #EAEAEA;
